@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { createCart } from "@/components/Services/Cart";
 import { useUser } from "@/components/context/UserContext";
 import ReviewSection from "../Review/ReviewSection";
+import RelatedProduct from "../RelatedProduct/RelatedProduct";
 
 interface ProductDetailsProps {
   product: {
@@ -278,6 +279,9 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       {/* Review Section */}
       <div className=" p-6">
         <ReviewSection productId={product._id} />
+      </div>
+      <div className=" p-6">
+        <RelatedProduct category={product.category.name} />
       </div>
     </div>
   );

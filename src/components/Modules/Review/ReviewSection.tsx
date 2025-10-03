@@ -115,7 +115,6 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
         ).toFixed(1)
       : "0.0";
 
-  // Format date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -151,7 +150,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
       <div className="border-t border-amber-200 pt-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-amber-700">
+            <h2 className="text-xl font-bold text-amber-700">
               Customer Reviews
             </h2>
             <div className="flex items-center gap-3 mt-2">
@@ -167,22 +166,20 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
                   />
                 ))}
               </div>
-              <span className="text-lg font-semibold text-amber-600">
+              <span className="text-sm font-semibold text-amber-600">
                 {averageRating} out of 5
               </span>
-              <span className="text-gray-500">({reviews.length} reviews)</span>
+              <span className="text-gray-500 text-sm">({reviews.length} reviews)</span>
             </div>
           </div>
         </div>
 
-        {/* Write Review Form */}
         {user && user.role === "user" && (
           <div className="bg-gradient-to-br from-amber-50/50 to-white border border-amber-200 rounded-xl p-6 mb-8 shadow-md">
             <h3 className="text-xl font-semibold text-amber-700 mb-4">
               Write a Review
             </h3>
 
-            {/* Rating Stars */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-amber-700 mb-2">
                 Your Rating
@@ -209,7 +206,6 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
               </div>
             </div>
 
-            {/* Comment */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Your Review
@@ -223,7 +219,6 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
               />
             </div>
 
-            {/* Submit Button */}
             <Button
               onClick={handleSubmitReview}
               disabled={submitting || rating === 0 || !comment.trim()}
