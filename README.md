@@ -84,6 +84,8 @@
 3. **Create a `.env.local` file** in the root directory and configure your environment variables:
    ```bash
     NEXT_PUBLIC_BASE_API=http://localhost:5000/api/v1
+    NEXT_PUBLIC_WHATSAPP_NUMBER=+8801XXXXXXXXX
+   NEXT_PUBLIC_BASE_FRONTEND_API=http://localhost:3000
    ```
 
 ## 📂 Project Structure  

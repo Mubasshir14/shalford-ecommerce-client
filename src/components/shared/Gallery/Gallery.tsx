@@ -213,7 +213,7 @@ const Gallery: React.FC = () => {
                       width: img.naturalWidth,
                       height: img.naturalHeight,
                       alt: `Gallery image ${item.id}`,
-                      link: item.link, // optional link
+                      link: item.link,
                     });
                   };
                   img.onerror = () => {
