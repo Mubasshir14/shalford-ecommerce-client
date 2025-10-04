@@ -179,6 +179,7 @@
 //   );
 // };
 
+
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -197,10 +198,11 @@ interface ProductSidebarProps {
   setMinPrice: (value: string) => void;
   setMaxPrice: (value: string) => void;
   handlePriceFilter: () => void;
+  clearPriceFilter: () => void; 
   isPriceFilterOpen: boolean;
   setIsPriceFilterOpen: (value: boolean) => void;
   activeFilter: {
-    type: "all" | "gender" | "category" | null;
+    type: "all" | "gender" | "category" | "price" | null;
     value: string | null;
     displayName: string;
   };
@@ -220,6 +222,7 @@ const ProductSidebar: React.FC<ProductSidebarProps> = ({
   setMinPrice,
   setMaxPrice,
   handlePriceFilter,
+  clearPriceFilter,
   isPriceFilterOpen,
   setIsPriceFilterOpen,
   activeFilter,
@@ -301,11 +304,8 @@ const ProductSidebar: React.FC<ProductSidebarProps> = ({
         </h3>
         {isPriceFilterOpen && (
           <div className="space-y-4">
-            {/* Range Slider */}
             <div className="relative pt-2 pb-6">
-              {/* Track */}
               <div className="relative h-1.5 bg-gray-200 rounded-full">
-                {/* Active Track */}
                 <div
                   className="absolute h-full bg-amber-600 rounded-full"
                   style={{
@@ -391,12 +391,23 @@ const ProductSidebar: React.FC<ProductSidebarProps> = ({
               </div>
             </div>
 
-            <Button
-              onClick={handlePriceFilter}
-              className="w-full bg-amber-600 text-white hover:bg-amber-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              Apply Filter
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={handlePriceFilter}
+                className="flex-1 bg-amber-600 text-white hover:bg-amber-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+              >
+                Apply Filter
+              </Button>
+              {(minPrice || maxPrice) && (
+                <Button
+                  onClick={clearPriceFilter}
+                  variant="outline"
+                  className="flex-1 border-amber-300 text-amber-600 hover:bg-amber-50 rounded-lg"
+                >
+                  Clear
+                </Button>
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -449,8 +460,8 @@ const ProductSidebar: React.FC<ProductSidebarProps> = ({
       </div>
 
       {/* Categories */}
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold text-amber-700 mb-2">
+      <div className="mb-4 ">
+        <h3 className="text-lg font-semibold text-amber-700 mb-2 ">
           All Categories
         </h3>
         {loadingCategories ? (
@@ -460,7 +471,7 @@ const ProductSidebar: React.FC<ProductSidebarProps> = ({
         ) : categories.length === 0 ? (
           <p className="text-sm text-gray-500 text-center py-4">No categories found.</p>
         ) : (
-          <nav className="space-y-1 max-h-64 overflow-y-auto">
+          <nav className="space-y-1  overflow-y-auto">
             {categories.map((cat) => (
               <button
                 key={cat._id}

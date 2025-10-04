@@ -34,7 +34,7 @@ const ProductPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const [activeFilter, setActiveFilter] = useState<{
-    type: "all" | "gender" | "category" | null;
+    type: "all" | "gender" | "category" | "price" | null;
     value: string | null;
     displayName: string;
   }>({ type: "all", value: null, displayName: "All Products" });
@@ -72,6 +72,9 @@ const ProductPage = () => {
 
       setActiveFilter({ type: "gender", value: genderParam, displayName });
       setCurrentPage(1);
+      // Reset price on gender change
+      setMinPrice("");
+      setMaxPrice("");
     }
   }, [genderParam, allProducts.length]);
 
@@ -122,6 +125,9 @@ const ProductPage = () => {
         value: categoryId,
         displayName: categoryName,
       });
+      // Reset price on category change
+      setMinPrice("");
+      setMaxPrice("");
     } catch (err: any) {
       toast.error(err?.message || "Failed to fetch products by category");
     } finally {
@@ -138,6 +144,9 @@ const ProductPage = () => {
         displayName: "All Products",
       });
       setCurrentPage(1);
+      // Reset price
+      setMinPrice("");
+      setMaxPrice("");
       return;
     }
     const filtered = allProducts.filter(
@@ -152,6 +161,9 @@ const ProductPage = () => {
 
     setActiveFilter({ type: "gender", value: gender, displayName });
     setCurrentPage(1);
+    // Reset price
+    setMinPrice("");
+    setMaxPrice("");
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -168,6 +180,9 @@ const ProductPage = () => {
         value: null,
         displayName: "All Products",
       });
+      // Reset price
+      setMinPrice("");
+      setMaxPrice("");
       return;
     }
 
@@ -195,18 +210,70 @@ const ProductPage = () => {
       }`,
     });
     setCurrentPage(1);
+    // Reset price
+    setMinPrice("");
+    setMaxPrice("");
   };
 
   const handlePriceFilter = () => {
+    // Skip if no price values set (empty/default)
     if (!minPrice && !maxPrice) return;
-    const filtered = allProducts.filter((p) => {
+
+    // Filter from CURRENT products (cumulative)
+    let filteredProducts = products.filter((p) => {
       const price = p.price;
       return (
         (!minPrice || price >= parseFloat(minPrice)) &&
         (!maxPrice || price <= parseFloat(maxPrice))
       );
     });
-    setProducts(filtered);
+
+    // If no results after filter, show toast and revert
+    if (filteredProducts.length === 0) {
+      toast.warning("No products found in this price range. Showing all.");
+      filteredProducts = products;
+    }
+
+    setProducts(filteredProducts);
+    setCurrentPage(1);
+
+    // Update title by appending price range
+    let priceSuffix = "";
+    if (minPrice && maxPrice) {
+      priceSuffix = ` ($${minPrice} - $${maxPrice})`;
+    } else if (minPrice) {
+      priceSuffix = ` ($${minPrice}+)`;
+    } else if (maxPrice) {
+      priceSuffix = ` (Up to $${maxPrice})`;
+    }
+
+    const newDisplayName = activeFilter.displayName + priceSuffix;
+    setActiveFilter({
+      ...activeFilter,
+      type: "price", // Mark as price-active
+      value: `${minPrice || 0}-${maxPrice || "∞"}`, // For internal tracking
+      displayName: newDisplayName,
+    });
+  };
+
+  // New: Clear price filter function (passed to sidebar)
+  const clearPriceFilter = () => {
+    setMinPrice("");
+    setMaxPrice("");
+    // Revert to pre-price products (but since we don't store it, refetch based on active type)
+    if (activeFilter.type === "category") {
+      handleCategoryClick(activeFilter.value || "");
+    } else if (activeFilter.type === "gender") {
+      handleGenderClick(activeFilter.value || "");
+    } else {
+      fetchAllProducts();
+    }
+    setActiveFilter((prev) => ({
+      ...prev,
+      type: prev.type === "price" ? "all" : prev.type,
+      value: prev.type === "price" ? null : prev.value,
+      displayName: prev.displayName.replace(/\s*\(\$[^\)]+\)/, ""),
+    })); // Strip price suffix
   };
 
   return (
@@ -243,6 +310,7 @@ const ProductPage = () => {
             setMinPrice={setMinPrice}
             setMaxPrice={setMaxPrice}
             handlePriceFilter={handlePriceFilter}
+            clearPriceFilter={clearPriceFilter}
             isPriceFilterOpen={isPriceFilterOpen}
             setIsPriceFilterOpen={setIsPriceFilterOpen}
             activeFilter={activeFilter}
@@ -251,7 +319,7 @@ const ProductPage = () => {
 
         {/* Mobile Sidebar */}
         <div
-          className={`fixed top-0 left-0 h-full w-64 bg-white z-50 transform transition-transform duration-300 md:hidden ${
+          className={`fixed top-0 left-0 h-screen w-64 bg-white z-50 transform transition-transform duration-300 md:hidden overflow-y-auto ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -270,6 +338,7 @@ const ProductPage = () => {
               setMinPrice={setMinPrice}
               setMaxPrice={setMaxPrice}
               handlePriceFilter={handlePriceFilter}
+              clearPriceFilter={clearPriceFilter}
               isPriceFilterOpen={isPriceFilterOpen}
               setIsPriceFilterOpen={setIsPriceFilterOpen}
               activeFilter={activeFilter}
