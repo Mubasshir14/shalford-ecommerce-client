@@ -54,8 +54,9 @@ const AllProductSub = () => {
         <div className="space-y-4 sm:space-y-6 lg:space-y-8">
           {/* Category Images Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+            {/* Men's Collection */}
             <Link
-              href={"/men"}
+              href="/products?gender=male"
               className="w-full h-48 sm:h-56 lg:h-64 relative rounded-xl shadow-lg overflow-hidden transform transition-all duration-500 hover:scale-105 hover:shadow-xl bg-gradient-to-br from-amber-50/50 to-white"
             >
               <Image
@@ -66,8 +67,10 @@ const AllProductSub = () => {
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
             </Link>
+
+            {/* Women's Collection */}
             <Link
-              href={"/women"}
+              href="/products?gender=female"
               className="w-full h-48 sm:h-56 lg:h-64 relative rounded-xl shadow-lg overflow-hidden transform transition-all duration-500 hover:scale-105 hover:shadow-xl bg-gradient-to-br from-amber-50/50 to-white"
             >
               <Image
@@ -78,8 +81,10 @@ const AllProductSub = () => {
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
             </Link>
+
+            {/* Unisex Collection */}
             <Link
-              href={"/unisex"}
+              href="/products?gender=unisex"
               className="w-full h-48 sm:h-56 lg:h-64 relative rounded-xl shadow-lg overflow-hidden transform transition-all duration-500 hover:scale-105 hover:shadow-xl bg-gradient-to-br from-amber-50/50 to-white sm:col-span-2 lg:col-span-1"
             >
               <Image

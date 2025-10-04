@@ -1,3 +1,4 @@
+import HomeCategory from "@/components/Modules/Category/HomeCategory";
 import NewsletterComponents from "@/components/Modules/Newsletter/NewsLetterComponents";
 import OtherProduct from "@/components/Modules/Others/OtherProduct";
 import AllProductSub from "@/components/Modules/Product/AllProductSub/AllProductSub";
@@ -15,6 +16,7 @@ const HomePage = () => {
     <div>
       <HeroSection />
       <OnsaleProduct />
+      <HomeCategory />
       <SupportIcon />
       <Popup />
       <AllProductSub />
