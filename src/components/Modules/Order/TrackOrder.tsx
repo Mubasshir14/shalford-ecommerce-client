@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import OrderDetails from "./OrderDetails"; // তুমি উপরে যেটা লিখেছো সেটা আলাদা ফাইলে রাখো
+import OrderDetails from "./OrderDetails"; 
 import { trackOrder } from "@/components/Services/Order";
 
 const TrackOrder = () => {
@@ -30,16 +30,15 @@ const TrackOrder = () => {
     }
   };
 
-  // Delivery Date calculation (lastUpdate + 7 days)
   const getDeliveryDate = (updatedAt: string | undefined) => {
     if (!updatedAt) return "N/A";
     const date = new Date(updatedAt);
-    date.setDate(date.getDate() + 7); // 7 দিন যোগ
+    date.setDate(date.getDate() + 7); 
     return date.toDateString();
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 py-10 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 py-10 px-4 font-sansita">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <motion.h1
