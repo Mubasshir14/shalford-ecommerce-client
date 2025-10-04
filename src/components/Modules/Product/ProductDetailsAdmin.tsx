@@ -20,6 +20,8 @@ interface ProductDetailsAdminProps {
     price: number;
     delPrice: number;
     stock: number;
+    minSell: number;
+    maxSell: number;
     isFeatured: boolean;
     isOnSale: boolean;
     isActive: boolean;
@@ -146,7 +148,7 @@ export default function ProductDetailsAdmin({ product }: ProductDetailsAdminProp
               </div>
               <div className="flex flex-col space-y-1 bg-white p-3 rounded-md shadow-sm border border-amber-100">
                 <span className="font-medium text-amber-600">Colors</span>
-                <span className="text-gray-700">
+                <span className="text-gray-700 capitalize">
                   {product.color.length > 0 ? product.color.join(", ") : "None"}
                 </span>
               </div>
@@ -156,11 +158,19 @@ export default function ProductDetailsAdmin({ product }: ProductDetailsAdminProp
               </div>
               <div className="flex flex-col space-y-1 bg-white p-3 rounded-md shadow-sm border border-amber-100">
                 <span className="font-medium text-amber-600">Discounted Price</span>
-                <span className="text-gray-700">${product.delPrice.toFixed(2)}</span>
+                <span className="text-gray-700">Tk.{product.delPrice.toFixed(2)}</span>
               </div>
               <div className="flex flex-col space-y-1 bg-white p-3 rounded-md shadow-sm border border-amber-100">
                 <span className="font-medium text-amber-600">Stock</span>
                 <span className="text-gray-700">{product.stock}</span>
+              </div>
+              <div className="flex flex-col space-y-1 bg-white p-3 rounded-md shadow-sm border border-amber-100">
+                <span className="font-medium text-amber-600">Min Sell Item</span>
+                <span className="text-gray-700">{product.minSell}</span>
+              </div>
+              <div className="flex flex-col space-y-1 bg-white p-3 rounded-md shadow-sm border border-amber-100">
+                <span className="font-medium text-amber-600">Max Sell Item</span>
+                <span className="text-gray-700">{product.maxSell}</span>
               </div>
               <div className="flex flex-col space-y-1 bg-white p-3 rounded-md shadow-sm border border-amber-100">
                 <span className="font-medium text-amber-600">Featured</span>

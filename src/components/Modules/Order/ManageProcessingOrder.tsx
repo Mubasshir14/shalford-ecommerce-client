@@ -2,7 +2,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
+import { Copy, Search } from "lucide-react";
 import { getStatusBasedOrders, updateOrder } from "@/components/Services/Order";
 import { useRouter } from "next/navigation"; // For navigation to order details
 import { toast } from "sonner";
@@ -245,10 +245,26 @@ const ManageProcessingOrderAdmin: React.FC<ManageProcessingOrderAdminProps> = ({
                             {index + 1}
                           </td>
                           <td className="px-4 py-4 border-r border-amber-100/50">
-                            <span className="font-mono text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-lg">
-                              {order.transactionId || "—"}
-                            </span>
+                            <button
+                              onClick={() => {
+                                if (order.transactionId) {
+                                  navigator.clipboard.writeText(
+                                    order.transactionId
+                                  );
+                                  toast.success(
+                                    "Transaction ID copied to clipboard!"
+                                  );
+                                }
+                              }}
+                              className="flex items-center gap-1 font-mono text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-lg hover:bg-amber-200 transition-colors duration-200"
+                            >
+                              <span>{order.transactionId || "—"}</span>
+                              {order.transactionId && (
+                                <Copy className="w-3.5 h-3.5 text-amber-600" />
+                              )}
+                            </button>
                           </td>
+
                           <td className="px-4 py-4 border-r border-amber-100/50">
                             <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                               {order.method}

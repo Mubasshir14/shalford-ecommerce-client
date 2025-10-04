@@ -15,8 +15,11 @@ import {
   Truck,
   Receipt,
   ShoppingBag,
+  FileText,
+  Copy,
 } from "lucide-react";
 import Image from "next/image";
+import { toast } from "sonner";
 
 interface Product {
   _id?: string;
@@ -56,7 +59,7 @@ interface OrderData {
     district: string;
     upzilla: string;
     shippingAddress?: string;
-    notes?: string;
+    specification?: string;
   };
   contact?: string;
   status: string;
@@ -67,7 +70,6 @@ interface OrderData {
 const OrderDetails = ({ order }: { order: OrderData[] }) => {
   // Extract the first order from the array
   const orderData = order?.[0] || null;
-  console.log("Order Data:", JSON.stringify(orderData, null, 2)); // Debugging
 
   // Status color mapping
   const getStatusColor = (status: string = "") => {
@@ -120,7 +122,10 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
     })) || [];
 
   // Calculate total products
-  const totalProducts = products.reduce((sum, product) => sum + product.quantity, 0);
+  const totalProducts = products.reduce(
+    (sum, product) => sum + product.quantity,
+    0
+  );
 
   // Loading state if orderData is null
   if (!orderData) {
@@ -220,7 +225,7 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                 </div>
               </div>
 
-              {orderData.transactionId && (
+              {/* {orderData.transactionId && (
                 <div className="mt-6 p-4 bg-amber-50 rounded-2xl border border-amber-200">
                   <div className="flex items-center gap-2 mb-2">
                     <CreditCard className="w-5 h-5 text-amber-600" />
@@ -231,6 +236,33 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                   <span className="font-mono text-sm bg-white px-3 py-2 rounded-lg border text-amber-700">
                     {orderData.transactionId}
                   </span>
+                </div>
+              )} */}
+
+              {orderData.transactionId && (
+                <div className="mt-6 p-4 bg-amber-50 rounded-2xl border border-amber-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CreditCard className="w-5 h-5 text-amber-600" />
+                    <span className="font-semibold text-amber-800">
+                      Transaction ID
+                    </span>
+                  </div>
+
+                  {/* Clickable Copy Section */}
+                  <button
+                    onClick={() => {
+                      if (orderData.transactionId) {
+                        navigator.clipboard.writeText(orderData.transactionId);
+                        toast.success("Transaction ID copied to clipboard!");
+                      } else {
+                        toast.error("Transaction ID not found!");
+                      }
+                    }}
+                    className="flex items-center gap-2 font-mono text-sm bg-white px-3 py-2 rounded-lg border text-amber-700 hover:bg-amber-100 transition-all duration-200"
+                  >
+                    <span>{orderData.transactionId}</span>
+                    <Copy className="w-4 h-4 text-amber-600" />
+                  </button>
                 </div>
               )}
             </motion.div>
@@ -372,7 +404,8 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                   </div>
                 </div>
 
-                {(orderData.user?.address || orderData.order?.shippingAddress) && (
+                {(orderData.user?.address ||
+                  orderData.order?.shippingAddress) && (
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-amber-600 mt-1" />
                     <div>
@@ -380,18 +413,31 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                         Delivery Address
                       </div>
                       <div className="text-amber-800 font-semibold">
-                        {orderData.order?.district|| orderData.user?.address || "N/A"}, {orderData.order?.upzilla || orderData.user?.address || "N/A"}, {orderData.order?.shippingAddress || orderData.user?.address || "N/A"}
+                        {orderData.order?.district ||
+                          orderData.user?.address ||
+                          "N/A"}
+                        ,{" "}
+                        {orderData.order?.upzilla ||
+                          orderData.user?.address ||
+                          "N/A"}
+                        ,{" "}
+                        {orderData.order?.shippingAddress ||
+                          orderData.user?.address ||
+                          "N/A"}
                       </div>
                     </div>
                   </div>
                 )}
 
-                {orderData.order?.notes && (
+                {orderData.order?.specification && (
                   <div className="mt-4 p-4 bg-amber-50 rounded-2xl border border-amber-200">
-                    <div className="text-sm text-amber-600 font-medium mb-2">
-                      Order Notes
+                    <div className="flex items-center gap-2 text-xl font-bold text-amber-800 mb-2">
+                      <FileText className="w-5 h-5 text-amber-700" />
+                      <span>Customer Order Specification</span>
                     </div>
-                    <div className="text-amber-800">{orderData.order.notes}</div>
+                    <div className="text-amber-800 whitespace-pre-line">
+                      {orderData.order.specification}
+                    </div>
                   </div>
                 )}
               </div>
@@ -428,19 +474,20 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                   </div>
                 </div>
 
-                {orderData.updatedAt && orderData.updatedAt !== orderData.createdAt && (
-                  <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-2xl border border-blue-200">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                    <div>
-                      <div className="font-semibold text-blue-800">
-                        Last Updated
-                      </div>
-                      <div className="text-sm text-blue-600">
-                        {new Date(orderData.updatedAt).toLocaleString()}
+                {orderData.updatedAt &&
+                  orderData.updatedAt !== orderData.createdAt && (
+                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-2xl border border-blue-200">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      <div>
+                        <div className="font-semibold text-blue-800">
+                          Last Updated
+                        </div>
+                        <div className="text-sm text-blue-600">
+                          {new Date(orderData.updatedAt).toLocaleString()}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
                 <div
                   className={`flex items-center gap-3 p-3 rounded-2xl border ${

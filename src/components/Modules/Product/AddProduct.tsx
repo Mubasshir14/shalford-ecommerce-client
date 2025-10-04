@@ -25,6 +25,8 @@ interface FormValues {
   price: string;
   delPrice: string;
   stock: string;
+  minSell: string;
+  maxSell: string;
   isFeatured: boolean;
   isOnSale: boolean;
   isActive: boolean;
@@ -55,6 +57,8 @@ export default function AddProduct() {
       price: "",
       delPrice: "",
       stock: "",
+      minSell: "",
+      maxSell: "",
       isFeatured: false,
       isOnSale: false,
       isActive: true,
@@ -125,6 +129,8 @@ export default function AddProduct() {
         price: Number(data.price),
         delPrice: Number(data.delPrice),
         stock: Number(data.stock),
+        minSell: Number(data.minSell),
+        maxSell: Number(data.maxSell),
       })
     );
     imageFiles.forEach((file) => formData.append("images", file));
@@ -134,7 +140,7 @@ export default function AddProduct() {
         toast.success(res?.message || "Product created successfully", {
           id: toastId,
         });
-        router.push('/admin/dashboard/manage-product')
+        router.push("/admin/dashboard/manage-product");
         reset();
         setImageFiles([]);
         setImagePreview([]);
@@ -401,6 +407,54 @@ export default function AddProduct() {
           />
           {errors.stock && (
             <p className="text-red-500 text-sm mt-1">{errors.stock.message}</p>
+          )}
+        </div>
+        <div>
+          <label
+            htmlFor="stock"
+            className="block mb-1 font-medium text-amber-600"
+          >
+            Minimum Sell Item 
+          </label>
+          <Input
+            id="minSell"
+            type="number"
+            {...register("minSell", {
+              required: "Minimum sell item is required",
+              min: { value: 0, message: "Minimum sell item  must be non-negative" },
+            })}
+            placeholder="Enter minSell quantity"
+            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${
+              errors.minSell ? "border-red-500" : ""
+            }`}
+            disabled={isSubmitting}
+          />
+          {errors.minSell && (
+            <p className="text-red-500 text-sm mt-1">{errors.minSell.message}</p>
+          )}
+        </div>
+        <div>
+          <label
+            htmlFor="maxSell"
+            className="block mb-1 font-medium text-amber-600"
+          >
+            Maximum Sell Item
+          </label>
+          <Input
+            id="maxSell"
+            type="number"
+            {...register("maxSell", {
+              required: "Maximum Sell Item is required",
+              min: { value: 0, message: "Maximum Sell Item must be non-negative" },
+            })}
+            placeholder="Enter Maximum Sell Item quantity"
+            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${
+              errors.maxSell ? "border-red-500" : ""
+            }`}
+            disabled={isSubmitting}
+          />
+          {errors.maxSell && (
+            <p className="text-red-500 text-sm mt-1">{errors.maxSell.message}</p>
           )}
         </div>
 

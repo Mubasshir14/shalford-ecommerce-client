@@ -13,6 +13,7 @@ import { createCart } from "@/components/Services/Cart";
 import { useUser } from "@/components/context/UserContext";
 import ReviewSection from "../Review/ReviewSection";
 import RelatedProduct from "../RelatedProduct/RelatedProduct";
+import { Input } from "@/components/ui/input";
 
 interface ProductDetailsProps {
   product: {
@@ -27,6 +28,8 @@ interface ProductDetailsProps {
     price: number;
     delPrice: number;
     stock: number;
+    minSell: number;
+    maxSell: number;
     isOnSale: boolean;
   };
 }
@@ -46,6 +49,52 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   const handleDecrease = () => {
     if (quantity > 1) setQuantity(quantity - 1);
   };
+
+  // const handleAddToCart = async () => {
+  //   const toastId = "creating-cart";
+  //   try {
+  //     if (!user) {
+  //       toast.error("Please log in to add items to the cart.", { id: toastId });
+  //       return;
+  //     }
+  //     if (user.role !== "user") {
+  //       toast.error("You are not allowed to add items to the cart.", {
+  //         id: toastId,
+  //       });
+  //       return;
+  //     }
+
+  //     if (!selectedSize) {
+  //       toast.warning("Please select a size.", { id: toastId });
+  //       return;
+  //     }
+
+  //     if (!selectedColor) {
+  //       toast.warning("Please select a color.", { id: toastId });
+  //       return;
+  //     }
+
+  //     const cartData = {
+  //       product: product._id,
+  //       size: selectedSize,
+  //       color: selectedColor,
+  //       price: product.price.toString(),
+  //       quantity: quantity.toString(),
+  //       totalPrice: (product.price * quantity).toString(),
+  //     };
+  //     const res = await createCart(cartData);
+
+  //     if (res?.success) {
+  //       toast.success("Product added to cart successfully!", { id: toastId });
+  //       router.push("/cart");
+  //     }
+  //   } catch (err: any) {
+  //     toast.error(err?.message || "Failed to add product to cart", {
+  //       id: toastId,
+  //     });
+  //     console.error(err);
+  //   }
+  // };
 
   const handleAddToCart = async () => {
     const toastId = "creating-cart";
@@ -71,6 +120,22 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         return;
       }
 
+      // 🧩 New quantity validation logic
+      const minSell = product.minSell;
+      const maxSell = product.maxSell;
+
+      if (quantity < minSell) {
+        toast.error(`You have to buy minimum ${minSell} items.`, {
+          id: toastId,
+        });
+        return;
+      }
+
+      if (quantity > maxSell) {
+        toast.error(`You can buy maximum ${maxSell} items.`, { id: toastId });
+        return;
+      }
+
       const cartData = {
         product: product._id,
         size: selectedSize,
@@ -79,6 +144,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         quantity: quantity.toString(),
         totalPrice: (product.price * quantity).toString(),
       };
+
       const res = await createCart(cartData);
 
       if (res?.success) {
@@ -170,6 +236,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               Stock: {product.stock}{" "}
               {product.stock > 0 ? "(Available)" : "(Out of Stock)"}
             </p>
+            <p className="text-gray-600">
+              Minimum Buy Quatity: {product.minSell}
+            </p>
+            <p className="text-gray-600">
+              Maximum Buy Quatity: {product.maxSell}
+            </p>
           </div>
 
           {/* Description */}
@@ -237,7 +309,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           </div>
 
           {/* Quantity Selector */}
-          <div className="flex items-center space-x-4">
+          {/* <div className="flex items-center space-x-4">
             <span className="font-medium text-amber-600">Quantity:</span>
             <div className="flex items-center border border-amber-300 rounded-lg overflow-hidden">
               <Button
@@ -250,6 +322,57 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               <span className="px-5 text-lg font-semibold text-amber-700">
                 {quantity}
               </span>
+              <Button
+                onClick={handleIncrease}
+                className="px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700"
+                disabled={quantity >= product.stock}
+              >
+                <Plus size={18} />
+              </Button>
+            </div>
+          </div> */}
+          {/* Quantity Selector */}
+          <div className="flex items-center space-x-4">
+            <span className="font-medium text-amber-600">Quantity:</span>
+            <div className="flex items-center border border-amber-300 rounded-lg overflow-hidden">
+              {/* Decrease Button */}
+              <Button
+                onClick={handleDecrease}
+                className="px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700"
+                disabled={quantity <= product.minSell}
+              >
+                <Minus size={18} />
+              </Button>
+
+              {/* Input Field */}
+              <Input
+                type="number"
+                value={quantity}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value);
+                  const min = product.minSell;
+                  const max = product.maxSell;
+
+                  if (!isNaN(val)) {
+                    if (val < min) {
+                      toast.warning(`Minimum quantity is ${min}`);
+                      setQuantity(min);
+                    } else if (val > max) {
+                      toast.warning(`Maximum quantity is ${max}`);
+                      setQuantity(max);
+                    } else {
+                      setQuantity(val);
+                    }
+                  } else if (e.target.value === "") {
+                    setQuantity(min);
+                  }
+                }}
+                className="w-16 text-center text-lg font-semibold text-amber-700 border-x border-amber-300 outline-none focus:ring-2 focus:ring-amber-400 rounded-md"
+                min={product.minSell || 1}
+                max={product.maxSell || product.stock}
+              />
+
+              {/* Increase Button */}
               <Button
                 onClick={handleIncrease}
                 className="px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700"

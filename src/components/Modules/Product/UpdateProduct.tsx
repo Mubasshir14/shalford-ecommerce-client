@@ -26,6 +26,8 @@ interface FormValues {
   price: string;
   delPrice: string;
   stock: string;
+  minSell: string;
+  maxSell: string;
   isFeatured: boolean;
   isOnSale: boolean;
   isActive: boolean;
@@ -44,6 +46,8 @@ interface UpdateProductProps {
     price: number;
     delPrice: number;
     stock: number;
+    minSell: number;
+    maxSell: number;
     isFeatured: boolean;
     isOnSale: boolean;
     isActive: boolean;
@@ -52,7 +56,9 @@ interface UpdateProductProps {
 
 export default function UpdateProduct({ product }: UpdateProductProps) {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [imagePreview, setImagePreview] = useState<string[]>(product.images || []);
+  const [imagePreview, setImagePreview] = useState<string[]>(
+    product.images || []
+  );
   const [categories, setCategories] = useState<any[]>([]);
   const [sizes, setSizes] = useState<Size[]>(product.size || []);
   const [colors, setColors] = useState<Color[]>(product.color || []);
@@ -75,6 +81,8 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
       price: product.price?.toString() || "",
       delPrice: product.delPrice?.toString() || "",
       stock: product.stock?.toString() || "",
+      minSell: product.minSell?.toString() || "",
+      maxSell: product.maxSell?.toString() || "",
       isFeatured: product.isFeatured || false,
       isOnSale: product.isOnSale || false,
       isActive: product.isActive || true,
@@ -88,7 +96,9 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
         const data = await getAllCategory();
         setCategories(data?.data || []);
       } catch (err: any) {
-        toast.error(err?.message || "Failed to fetch categories", { id: "fetching-categories" });
+        toast.error(err?.message || "Failed to fetch categories", {
+          id: "fetching-categories",
+        });
       } finally {
         setCategoriesLoading(false);
       }
@@ -137,7 +147,10 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
       return;
     }
 
-    console.log("imageFiles:", imageFiles.map((f) => ({ name: f.name, size: f.size })));
+    console.log(
+      "imageFiles:",
+      imageFiles.map((f) => ({ name: f.name, size: f.size }))
+    );
 
     const formData = new FormData();
     formData.append(
@@ -156,8 +169,10 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
     try {
       const res = await updateProduct(product._id, formData);
       if (res?.success) {
-        toast.success(res?.message || "Product updated successfully", { id: toastId });
-        router.push('/admin/dashboard/manage-product')
+        toast.success(res?.message || "Product updated successfully", {
+          id: toastId,
+        });
+        router.push("/admin/dashboard/manage-product");
         reset({
           name: data.name,
           description: data.description,
@@ -166,33 +181,47 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
           price: data.price,
           delPrice: data.delPrice,
           stock: data.stock,
+          minSell: data.minSell,
+          maxSell: data.maxSell,
           isFeatured: data.isFeatured,
           isOnSale: data.isOnSale,
           isActive: data.isActive,
         });
       }
     } catch (err: any) {
-      const message =
-        err?.message?.includes("duplicate")
-          ? "Product name already exists"
-          : err?.message || "Failed to update product";
+      const message = err?.message?.includes("duplicate")
+        ? "Product name already exists"
+        : err?.message || "Failed to update product";
       toast.error(message, { id: toastId });
     }
   };
 
   return (
     <div className="max-w-3xl mx-auto p-6 shadow-xl border rounded-xl my-10 bg-amber-50/30 font-[Sansita]">
-      <h1 className="text-2xl font-bold mb-6 text-center text-amber-600">Update Product</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center text-amber-600">
+        Update Product
+      </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div>
-          <label htmlFor="name" className="block mb-1 font-medium text-amber-600">
+          <label
+            htmlFor="name"
+            className="block mb-1 font-medium text-amber-600"
+          >
             Product Name
           </label>
           <Input
             id="name"
-            {...register("name", { required: "Product name is required", minLength: { value: 3, message: "Product name must be at least 3 characters" } })}
+            {...register("name", {
+              required: "Product name is required",
+              minLength: {
+                value: 3,
+                message: "Product name must be at least 3 characters",
+              },
+            })}
             placeholder="Enter product name"
-            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${errors.name ? "border-red-500" : ""}`}
+            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${
+              errors.name ? "border-red-500" : ""
+            }`}
             disabled={isSubmitting}
           />
           {errors.name && (
@@ -201,7 +230,10 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
         </div>
 
         <div>
-          <label htmlFor="description" className="block mb-1 font-medium text-amber-600">
+          <label
+            htmlFor="description"
+            className="block mb-1 font-medium text-amber-600"
+          >
             Description
           </label>
           <Controller
@@ -213,29 +245,42 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
                 value={field.value}
                 onTextChange={(e) => {
                   field.onChange(e.htmlValue || "");
-                  setValue("description", e.htmlValue || "", { shouldValidate: true });
+                  setValue("description", e.htmlValue || "", {
+                    shouldValidate: true,
+                  });
                 }}
                 headerTemplate={renderHeader()}
                 style={{ height: "320px" }}
-                className={`border-2 ${errors.description ? "border-red-500" : "border-amber-300"} rounded-lg`}
+                className={`border-2 ${
+                  errors.description ? "border-red-500" : "border-amber-300"
+                } rounded-lg`}
                 readOnly={isSubmitting}
               />
             )}
           />
           {errors.description && (
-            <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.description.message}
+            </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="category" className="block mb-1 font-medium text-amber-600">
+          <label
+            htmlFor="category"
+            className="block mb-1 font-medium text-amber-600"
+          >
             Category
           </label>
           <select
             id="category"
             {...register("category", { required: "Category is required" })}
-            className={`w-full p-2 border-2 rounded-lg focus:ring-amber-500 focus:outline-none disabled:opacity-50 bg-white ${errors.category ? "border-red-500" : "border-amber-300"}`}
-            disabled={isSubmitting || categoriesLoading || categories.length === 0}
+            className={`w-full p-2 border-2 rounded-lg focus:ring-amber-500 focus:outline-none disabled:opacity-50 bg-white ${
+              errors.category ? "border-red-500" : "border-amber-300"
+            }`}
+            disabled={
+              isSubmitting || categoriesLoading || categories.length === 0
+            }
           >
             <option value="">Select Category</option>
             {categories.map((cat) => (
@@ -245,21 +290,30 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
             ))}
           </select>
           {errors.category && (
-            <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.category.message}
+            </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="gender" className="block mb-1 font-medium text-amber-600">
+          <label
+            htmlFor="gender"
+            className="block mb-1 font-medium text-amber-600"
+          >
             Gender
           </label>
           <select
             id="gender"
             {...register("gender", { required: "Gender is required" })}
-            className={`w-full p-2 border-2 rounded-lg focus:ring-amber-500 capitalize focus:outline-none disabled:opacity-50 bg-white ${errors.gender ? "border-red-500" : "border-amber-300"}`}
+            className={`w-full p-2 border-2 rounded-lg focus:ring-amber-500 capitalize focus:outline-none disabled:opacity-50 bg-white ${
+              errors.gender ? "border-red-500" : "border-amber-300"
+            }`}
             disabled={isSubmitting}
           >
-            <option value="" disabled>Select Gender</option>
+            <option value="" disabled>
+              Select Gender
+            </option>
             {Object.values(Gender).map((g) => (
               <option key={g} value={g}>
                 {g}
@@ -312,15 +366,23 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
         </div>
 
         <div>
-          <label htmlFor="price" className="block mb-1 font-medium text-amber-600">
+          <label
+            htmlFor="price"
+            className="block mb-1 font-medium text-amber-600"
+          >
             Price
           </label>
           <Input
             id="price"
             type="number"
-            {...register("price", { required: "Price is required", min: { value: 0, message: "Price must be non-negative" } })}
+            {...register("price", {
+              required: "Price is required",
+              min: { value: 0, message: "Price must be non-negative" },
+            })}
             placeholder="Enter price"
-            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${errors.price ? "border-red-500" : ""}`}
+            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${
+              errors.price ? "border-red-500" : ""
+            }`}
             disabled={isSubmitting}
           />
           {errors.price && (
@@ -329,36 +391,105 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
         </div>
 
         <div>
-          <label htmlFor="delPrice" className="block mb-1 font-medium text-amber-600">
+          <label
+            htmlFor="delPrice"
+            className="block mb-1 font-medium text-amber-600"
+          >
             Discounted Price
           </label>
           <Input
             id="delPrice"
             type="number"
-            {...register("delPrice", { required: "Discounted price is required", min: { value: 0, message: "Discounted price must be non-negative" } })}
+            {...register("delPrice", {
+              required: "Discounted price is required",
+              min: {
+                value: 0,
+                message: "Discounted price must be non-negative",
+              },
+            })}
             placeholder="Enter discounted price"
-            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${errors.delPrice ? "border-red-500" : ""}`}
+            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${
+              errors.delPrice ? "border-red-500" : ""
+            }`}
             disabled={isSubmitting}
           />
           {errors.delPrice && (
-            <p className="text-red-500 text-sm mt-1">{errors.delPrice.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.delPrice.message}
+            </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="stock" className="block mb-1 font-medium text-amber-600">
+          <label
+            htmlFor="stock"
+            className="block mb-1 font-medium text-amber-600"
+          >
             Stock
           </label>
           <Input
             id="stock"
             type="number"
-            {...register("stock", { required: "Stock is required", min: { value: 0, message: "Stock must be non-negative" } })}
+            {...register("stock", {
+              required: "Stock is required",
+              min: { value: 0, message: "Stock must be non-negative" },
+            })}
             placeholder="Enter stock quantity"
-            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${errors.stock ? "border-red-500" : ""}`}
+            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${
+              errors.stock ? "border-red-500" : ""
+            }`}
             disabled={isSubmitting}
           />
           {errors.stock && (
             <p className="text-red-500 text-sm mt-1">{errors.stock.message}</p>
+          )}
+        </div>
+        <div>
+          <label
+            htmlFor="minSell"
+            className="block mb-1 font-medium text-amber-600"
+          >
+            Minimum Sell Item
+          </label>
+          <Input
+            id="minSell"
+            type="number"
+            {...register("minSell", {
+              required: "Minimum sell item is required",
+              min: { value: 0, message: "Minimum sell item must be non-negative" },
+            })}
+            placeholder="Enter Minimum sell item quantity"
+            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${
+              errors.minSell ? "border-red-500" : ""
+            }`}
+            disabled={isSubmitting}
+          />
+          {errors.minSell && (
+            <p className="text-red-500 text-sm mt-1">{errors.minSell.message}</p>
+          )}
+        </div>
+        <div>
+          <label
+            htmlFor="maxSell"
+            className="block mb-1 font-medium text-amber-600"
+          >
+            Maximum Sell Item
+          </label>
+          <Input
+            id="maxSell"
+            type="number"
+            {...register("maxSell", {
+              required: "Maximum sell item is required",
+              min: { value: 0, message: "Maximum sell item must be non-negative" },
+            })}
+            placeholder="Enter Maximum Sell Item Quantity"
+            className={`border-amber-300 focus:ring-amber-500 rounded-lg ${
+              errors.maxSell ? "border-red-500" : ""
+            }`}
+            disabled={isSubmitting}
+          />
+          {errors.maxSell && (
+            <p className="text-red-500 text-sm mt-1">{errors.maxSell.message}</p>
           )}
         </div>
 
@@ -399,7 +530,9 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
         </div>
 
         <div>
-          <label className="block mb-1 font-medium text-amber-600">Product Images (Max 5)</label>
+          <label className="block mb-1 font-medium text-amber-600">
+            Product Images (Max 5)
+          </label>
           <div className="space-y-4">
             {imagePreview.length > 0 && (
               <ImagePreviewer
@@ -421,7 +554,9 @@ export default function UpdateProduct({ product }: UpdateProductProps) {
 
         <Button
           type="submit"
-          disabled={isSubmitting || sizes.length === 0 || imagePreview.length === 0}
+          disabled={
+            isSubmitting || sizes.length === 0 || imagePreview.length === 0
+          }
           className="w-full bg-amber-600 text-white hover:bg-amber-700 rounded-lg"
         >
           {isSubmitting ? "Updating..." : "Update Product"}

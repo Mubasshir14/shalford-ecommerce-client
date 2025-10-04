@@ -51,6 +51,7 @@ interface CreateOrderData {
   totalAmount: number;
   deliveryCharge: number;
   contact?: string;
+  specification?: string;
   district: string;
   upzilla: string;
   shippingAddress: string;
@@ -658,6 +659,7 @@ const OrderPage = () => {
   const [selectedUpazila, setSelectedUpazila] = useState<string>("");
   const [paymentMethod] = useState<"Online">("Online");
   const [shippingAddress, setShippingAddress] = useState<string>("");
+  const [specification, setSpecification] = useState<string>("");
   const [contact, setContact] = useState<string>("");
   const [contactError, setContactError] = useState<string>("");
   const { user } = useUser();
@@ -686,50 +688,6 @@ const OrderPage = () => {
   const subtotal = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
   const deliveryCharge = 150;
   const totalAmount = subtotal + deliveryCharge;
-
-  // const handlePlaceOrder = async () => {
-  //   if (!selectedDistrict || !selectedUpazila || !shippingAddress.trim()) {
-  //     toast.error("Please fill in all required fields");
-  //     return;
-  //   }
-
-  //   if (cartItems.length === 0) {
-  //     toast.error("Your cart is empty");
-  //     return;
-  //   }
-
-  //   setSubmitting(true);
-
-  //   try {
-  //     const orderData: CreateOrderData = {
-  //       product: cartItems.map((item) => ({
-  //         product: item.product._id,
-  //         quantity: item.quantity,
-  //         unitPrice: item.product.price,
-  //         color: item.color,
-  //         size: item.size,
-  //       })),
-  //       totalAmount,
-  //       deliveryCharge,
-  //       district: selectedDistrict,
-  //       upzilla: selectedUpazila,
-  //       shippingAddress,
-  //       paymentMethod,
-  //     };
-
-  //     const result = await createOrder(orderData);
-
-  //     if (paymentMethod === "Online" && result?.data?.paymentUrl) {
-  //       window.location.href = result.data.paymentUrl;
-  //     } else {
-  //       toast.success("Order placed successfully!");
-  //     }
-  //   } catch (err: any) {
-  //     toast.error(err?.message || "Failed to place order");
-  //   } finally {
-  //     setSubmitting(false);
-  //   }
-  // };
 
   useEffect(() => {
     if (user?.phone) {
@@ -768,12 +726,12 @@ const OrderPage = () => {
         totalAmount,
         deliveryCharge,
         contact: contact.replace(/[\s-]/g, ""),
+        specification,
         district: selectedDistrict,
         upzilla: selectedUpazila,
         shippingAddress,
         paymentMethod,
       };
-      console.log(orderData);
       const result = await createOrder(orderData);
 
       if (paymentMethod === "Online" && result?.data?.paymentUrl) {
@@ -899,6 +857,24 @@ const OrderPage = () => {
                     className="min-h-[100px] rounded-xl border-amber-200 focus:border-amber-400 resize-none"
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
+                  />
+                </div>
+
+                {/* Specification */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="specification"
+                    className="text-sm font-semibold text-gray-700"
+                  >
+                    Detailed specification *
+                  </Label>
+                  <Textarea
+                    id="specification"
+                    placeholder="Enter your full specification (write if any custom order need)"
+                    required
+                    className="min-h-[100px] rounded-xl border-amber-200 focus:border-amber-400 resize-none"
+                    value={specification}
+                    onChange={(e) => setSpecification(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
