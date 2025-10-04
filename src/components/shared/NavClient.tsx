@@ -923,9 +923,9 @@ export default function NavbarClient() {
                       }`}
                     >
                       {item.name}
-                      {isActiveLink(item.path) && (
+                      {/* {isActiveLink(item.path) && (
                         <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-amber-400 rounded-full" />
-                      )}
+                      )} */}
                     </Link>
                   )}
                 </div>
