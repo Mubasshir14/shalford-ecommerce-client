@@ -207,7 +207,7 @@ const ReturnRefundPolicy = () => {
   const address = "Dhaka, Bangladesh";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50 mt-20 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50 mt-20 py-12 px-4 sm:px-6 lg:px-8 font-arima">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">

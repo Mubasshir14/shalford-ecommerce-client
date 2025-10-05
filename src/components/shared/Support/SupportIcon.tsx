@@ -51,7 +51,7 @@ const SupportIcon = () => {
   return (
     <>
       {/* Fixed Support Icon */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 z-50 font-arima">
         <button
           className="relative p-4 bg-amber-500 text-white rounded-full shadow-lg hover:bg-amber-600 transition-colors duration-300 group"
           onClick={() => setIsModalOpen(true)}

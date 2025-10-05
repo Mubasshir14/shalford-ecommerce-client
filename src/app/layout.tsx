@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { Sansita, Lobster, Arima, Oleo_Script } from "next/font/google";
 import Providers from "@/components/lib/providers/Providers";
+import SupportIcon from "@/components/shared/Support/SupportIcon";
 
 const sansita = Sansita({
   variable: "--font-sansita",
@@ -32,8 +33,8 @@ export const metadata: Metadata = {
   description:
     "MUNJIA FASHION offers high-quality products for everyday needs. Explore our collection of fashion, electronics, home essentials, and more.",
   icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
+    icon: "/fav.png",
+    apple: "/fav.png",
   },
   keywords: [
     "MUNJIA FASHION",
@@ -91,6 +92,7 @@ export default function RootLayout({
         <Providers>
           <Toaster richColors position="top-center" />
           {children}
+          <SupportIcon />
         </Providers>
       </body>
     </html>
