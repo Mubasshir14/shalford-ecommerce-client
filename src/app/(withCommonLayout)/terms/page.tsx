@@ -1,14 +1,12 @@
-import PageLayout from "@/components/Layout/PageLayout";
+import TermsOfServicePage from "@/components/shared/TermsOfService/TermsOfService";
 import React from "react";
 
-const TermsOfServicePage = () => {
+const TermsOfServicePages = () => {
   return (
-    <PageLayout title="Terms of Service">
-      <p className="text-gray-700">
-        By using Shalford & Co., you agree to comply with our terms and conditions. Our Terms of Service ensure a safe, reliable, and enjoyable shopping experience for all our customers.
-      </p>
-    </PageLayout>
+    <div >
+     <TermsOfServicePage/>
+    </div>
   );
 };
 
-export default TermsOfServicePage;
+export default TermsOfServicePages;

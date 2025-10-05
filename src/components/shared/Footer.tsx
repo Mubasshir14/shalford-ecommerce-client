@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
-import Logo from "../../assets/company.png";
+import Logo from "../../assets/sk2.png";
 import Image from "next/image";
 import {
   Facebook,
   Instagram,
-  Linkedin,
   Mail,
   MapPin,
   Phone,
-  Twitter,
 } from "lucide-react";
 import Link from "next/link";
 import { createSubscriber } from "../Services/Subscriber";
@@ -49,8 +47,8 @@ const Footer: React.FC = () => {
               // className="w-36"
               src={Logo}
               alt="Logo"
-              width={90}
-              height={90}
+              width={120}
+              height={120}
             />
             <p className="text-gray-100 text-sm">
               Be the first to know when we drop something new! Keep an eye out
@@ -67,10 +65,11 @@ const Footer: React.FC = () => {
             <h3 className="text-gray-50 font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               {[
-                { text: "Learn", path: "/learn" },
                 { text: "Contact us", path: "/contact" },
                 { text: "FAQ", path: "/faq" },
-                { text: "Our Service", path: "/service" },
+                { text: "Payment", path: "/payment-details" },
+                { text: "Return & Refund Policy", path: "/return-refund" },
+                { text: "Track Order", path: "/track-order" },
               ].map((link) => (
                 <li key={link.text}>
                   <Link
@@ -90,15 +89,15 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-sm text-gray-100">
                 <MapPin className="text-amber-600 mt-1" />
-                <span>123 Luxury Lane, Street Mart, CTG</span>
+                <span>Dhaka, Bangladesh</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-gray-100">
                 <Phone className="text-amber-600" />
-                <span>+88 01111111111</span>
+                <span>{`${process.env.NEXT_PUBLIC_HOTLINE_NUMBER}`}</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-gray-100">
                 <Mail className="text-amber-600" />
-                <span>shalford&co@gmail.com</span>
+                <span>{`${process.env.NEXT_PUBLIC_EMAI}`}</span>
               </li>
             </ul>
           </div>
@@ -149,9 +148,7 @@ const Footer: React.FC = () => {
             <div className="flex items-center space-x-4">
               {[
                 { Icon: Facebook, label: "Facebook" },
-                { Icon: Twitter, label: "Twitter" },
                 { Icon: Instagram, label: "Instagram" },
-                { Icon: Linkedin, label: "LinkedIn" },
               ].map(({ Icon, label }) => (
                 <a
                   key={label}
@@ -164,7 +161,7 @@ const Footer: React.FC = () => {
               ))}
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-gray-300">
-              <span>© {currentYear} Shalford & Co. All rights reserved.</span>
+              <span>© {currentYear} MUNJIA FASHION All rights reserved.</span>
               <div className="flex gap-4">
                 <Link
                   href="/privacy"

@@ -456,12 +456,12 @@ const PaymentDetails = () => {
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center hover:bg-white/20 transition-all duration-300">
               <Phone className="h-8 w-8 mx-auto mb-3" />
               <h3 className="font-bold mb-2">Call Us</h3>
-              <p className="text-amber-100">09610-333-333</p>
+              <p className="text-amber-100">{`${process.env.NEXT_PUBLIC_HOTLINE_NUMBER}`}</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center hover:bg-white/20 transition-all duration-300">
               <Mail className="h-8 w-8 mx-auto mb-3" />
               <h3 className="font-bold mb-2">Email Us</h3>
-              <p className="text-amber-100">support@sslcommerz.com</p>
+              <p className="text-amber-100">{`${process.env.NEXT_PUBLIC_EMAI}`}</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center hover:bg-white/20 transition-all duration-300">
               <MapPin className="h-8 w-8 mx-auto mb-3" />

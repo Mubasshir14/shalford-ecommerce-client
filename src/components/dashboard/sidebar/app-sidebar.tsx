@@ -22,7 +22,7 @@ import { NavUser } from "./nav-user";
 import Link from "next/link";
 import { useUser } from "@/components/context/UserContext";
 import Image from "next/image";
-import logo from "../../../assets/company.png";
+import logo from "../../../assets/sk2.png";
 import { TruckElectric } from "lucide-react";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

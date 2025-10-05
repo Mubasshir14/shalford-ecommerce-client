@@ -19,8 +19,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { registerUser } from "@/components/Services";
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock, ShoppingBag } from "lucide-react";
 import { JSX } from "react/jsx-runtime";
+import logo from "../../../assets/sk2.png";
+import Image from "next/image";
 
 // Validation schemas
 const allowedDomains = ["gmail.com", "yahoo.com"];
@@ -133,12 +135,25 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center font-arima bg-gray-50 mt-20">
+    <div className="min-h-screen flex justify-center items-center font-arima bg-gradient-to-br from-amber-50 via-white to-orange-50 mt-20">
       <div className="border-2 border-gray-200 shadow-lg rounded-2xl max-w-md w-full p-6 bg-white">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Register</h1>
-          <p className="text-gray-500">
-            Create Your Account and Start Your Journey
+        <div className="flex flex-col items-center mb-6">
+          <div className="bg-amber-100 p-4 rounded-full mb-3 shadow-md">
+            <Image
+              src={logo}
+              alt="Company Logo"
+              width={80}
+              height={80}
+              className="object-contain"
+            />
+          </div>
+
+          <h1 className="text-3xl font-bold text-amber-800 mb-1 tracking-wide">
+            Sign Up
+          </h1>
+
+          <p className="text-xs text-gray-400 text-center max-w-xs">
+            Create your account and start your journey with us today.
           </p>
         </div>
 
@@ -221,28 +236,43 @@ export default function RegisterForm() {
               />
             ))}
 
+            {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full mt-4"
-              disabled={
-                isSubmitting ||
-                !!(passwordConfirm && password !== passwordConfirm)
-              }
+              disabled={isSubmitting}
+              className="w-full h-12 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Registering..." : "Register"}
+              {isSubmitting ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Signing up...
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  <ShoppingBag className="w-5 h-5" />
+                  Sign Up
+                </span>
+              )}
             </Button>
           </form>
         </Form>
 
-        <p className="text-sm text-gray-600 text-center mt-4">
-          Already have an account?
+        <div className="flex  items-center justify-center gap-1 mt-2">
+          <p className="text-sm text-gray-600 ">Already have an account?</p>
           <Link
             href="/login"
-            className="ml-1 text-blue-500 underline hover:text-blue-600"
+            className="text-amber-600 hover:text-amber-700 font-semibold hover:underline transition-colors"
           >
-            Login
+            Sign In
           </Link>
-        </p>
+        </div>
+
+        <div className="mt-6 pt-2 border-t border-gray-100">
+          <p className="text-xs text-gray-400 text-center flex items-center justify-center gap-1 capitalize">
+            <Lock className="w-3 h-3" />
+            Secure login with encrypted connection
+          </p>
+        </div>
       </div>
     </div>
   );

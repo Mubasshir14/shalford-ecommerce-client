@@ -1,14 +1,13 @@
 import React from "react";
-import PageLayout from "@/components/Layout/PageLayout";
+import PrivacyPolicyPage from "@/components/shared/PrivacyPolicyPage/PrivacyPolicyPage";
 
-const PrivacyPolicyPage = () => {
+const PrivacyPolicyPages = () => {
   return (
-    <PageLayout title="Privacy Policy">
-      <p className="text-gray-700">
-        We at Shalford & Co. value your privacy. Any information you provide is securely stored and never shared without your consent. Our privacy practices are designed to keep you safe and confident while shopping.
-      </p>
-    </PageLayout>
+    <div>
+      <PrivacyPolicyPage />
+    </div>
   );
 };
 
-export default PrivacyPolicyPage;
+export default PrivacyPolicyPages;
+

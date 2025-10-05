@@ -44,13 +44,13 @@
 //   const [isSearchOpen, setIsSearchOpen] = useState(false);
 //   const [cartLength, setCartLength] = useState(0);
 //   const [isDarkMode, setIsDarkMode] = useState(false);
-  
+
 //   // Search states
 //   const [searchQuery, setSearchQuery] = useState("");
 //   const [searchResults, setSearchResults] = useState<any[]>([]);
 //   const [isSearching, setIsSearching] = useState(false);
 //   const [allProducts, setAllProducts] = useState<any[]>([]);
-  
+
 //   const { user, setUser, setIsLoading } = useUser();
 //   const router = useRouter();
 //   const pathname = usePathname();
@@ -91,12 +91,12 @@
 //             product.category?.name?.toLowerCase().includes(query) ||
 //             product.gender?.toLowerCase().includes(query)
 //           );
-//         }).slice(0, 5); 
-        
+//         }).slice(0, 5);
+
 //         setSearchResults(filtered);
 //         setIsSearching(false);
 //       }, 300);
-      
+
 //       return () => clearTimeout(timer);
 //     } else {
 //       setSearchResults([]);
@@ -200,11 +200,11 @@
 //           <div className="flex items-center justify-between h-16">
 //             {/* Logo */}
 //             <Link href="/" className="flex items-center space-x-2 group">
-//               <Image 
-//                 src={Logo} 
-//                 alt="Brand Logo" 
-//                 className="w-12 transition-transform duration-300 group-hover:scale-110" 
-//                 priority 
+//               <Image
+//                 src={Logo}
+//                 alt="Brand Logo"
+//                 className="w-12 transition-transform duration-300 group-hover:scale-110"
+//                 priority
 //               />
 //               <span className="hidden sm:block text-xl font-bold text-white group-hover:text-amber-400 transition-colors duration-300">
 //                 ShopName
@@ -467,7 +467,7 @@
 //                       </span>
 //                     )}
 //                   </Link>
-                 
+
 //                 </>
 //               )}
 //               <Button
@@ -521,7 +521,7 @@
 
 //             {user && user.role === "user" && (
 //               <>
-               
+
 //                 <Link
 //                   href={`/${user.role}/dashboard/cart`}
 //                   className="flex items-center space-x-3 text-gray-600 hover:text-amber-600 hover:bg-amber-50/50 px-4 py-3 rounded-lg transition-all duration-200"
@@ -607,7 +607,6 @@
 //   );
 // }
 
-
 "use client";
 
 import {
@@ -633,7 +632,7 @@ import { useUser } from "../context/UserContext";
 import { logout } from "../Services";
 import { toast } from "sonner";
 import { useRouter, usePathname } from "next/navigation";
-import Logo from "../../assets/company.png";
+import Logo from "../../assets/sk2.png";
 import { getUserCart } from "../Services/Cart";
 import { getAllProducts } from "../Services/Product";
 import { getAllCategory } from "../Services/Category";
@@ -659,17 +658,17 @@ export default function NavbarClient() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const [cartLength, setCartLength] = useState(0);
-  
+
   // Search states
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [allProducts, setAllProducts] = useState<any[]>([]);
-  
+
   // Categories state
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(false);
-  
+
   const { user, setUser, setIsLoading } = useUser();
   const router = useRouter();
   const pathname = usePathname();
@@ -679,10 +678,30 @@ export default function NavbarClient() {
 
   const navItems: NavItem[] = [
     { name: "Products", path: "/products", icon: Shirt, hasDropdown: true },
-    { name: "Men", path: "/products?gender=male", icon: Package, param: "male" },
-    { name: "Women", path: "/products?gender=female", icon: Package, param: "female" },
-    { name: "Unisex", path: "/products?gender=unisex", icon: Package, param: "unisex" },
-    { name: "Payment", path: "/payment-details", icon: CircleDollarSign, param: "" },
+    {
+      name: "Men",
+      path: "/products?gender=male",
+      icon: Package,
+      param: "male",
+    },
+    {
+      name: "Women",
+      path: "/products?gender=female",
+      icon: Package,
+      param: "female",
+    },
+    {
+      name: "Unisex",
+      path: "/products?gender=unisex",
+      icon: Package,
+      param: "unisex",
+    },
+    {
+      name: "Payment",
+      path: "/payment-details",
+      icon: CircleDollarSign,
+      param: "",
+    },
   ];
 
   // Fetch categories
@@ -721,20 +740,22 @@ export default function NavbarClient() {
     if (searchQuery.trim().length > 0) {
       setIsSearching(true);
       const timer = setTimeout(() => {
-        const filtered = allProducts.filter((product) => {
-          const query = searchQuery.toLowerCase();
-          return (
-            product.name?.toLowerCase().includes(query) ||
-            product.description?.toLowerCase().includes(query) ||
-            product.category?.name?.toLowerCase().includes(query) ||
-            product.gender?.toLowerCase().includes(query)
-          );
-        }).slice(0, 5); 
-        
+        const filtered = allProducts
+          .filter((product) => {
+            const query = searchQuery.toLowerCase();
+            return (
+              product.name?.toLowerCase().includes(query) ||
+              product.description?.toLowerCase().includes(query) ||
+              product.category?.name?.toLowerCase().includes(query) ||
+              product.gender?.toLowerCase().includes(query)
+            );
+          })
+          .slice(0, 5);
+
         setSearchResults(filtered);
         setIsSearching(false);
       }, 300);
-      
+
       return () => clearTimeout(timer);
     } else {
       setSearchResults([]);
@@ -837,24 +858,28 @@ export default function NavbarClient() {
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2 group">
-              <Image 
-                src={Logo} 
-                alt="Brand Logo" 
-                className="w-12 transition-transform duration-300 group-hover:scale-110" 
-                priority 
+            <Link href="/" className="">
+              <Image
+              width={120}
+              height={80}
+                src={Logo}
+                alt="Brand Logo"
+                className=" transition-transform duration-300 group-hover:scale-110"
+                priority
               />
-              <span className="hidden sm:block text-xl font-bold text-white group-hover:text-amber-400 transition-colors duration-300">
-                ShopName
-              </span>
+              
             </Link>
 
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-1">
               {navItems.map((item) => (
-                <div key={item.name} className="relative" ref={item.hasDropdown ? productsDropdownRef : null}>
+                <div
+                  key={item.name}
+                  className="relative"
+                  ref={item.hasDropdown ? productsDropdownRef : null}
+                >
                   {item.hasDropdown ? (
                     <div
                       onMouseEnter={() => setIsProductsDropdownOpen(true)}
@@ -867,7 +892,11 @@ export default function NavbarClient() {
                         }`}
                       >
                         {item.name}
-                        <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isProductsDropdownOpen ? "rotate-180" : ""}`} />
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform duration-200 ${
+                            isProductsDropdownOpen ? "rotate-180" : ""
+                          }`}
+                        />
                         {isActiveLink(item.path) && (
                           <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-amber-400 rounded-full" />
                         )}
@@ -880,15 +909,21 @@ export default function NavbarClient() {
                             {loadingCategories ? (
                               <div className="flex items-center justify-center py-8">
                                 <Loader2 className="h-6 w-6 animate-spin text-amber-600" />
-                                <span className="ml-2 text-gray-600 text-sm">Loading...</span>
+                                <span className="ml-2 text-gray-600 text-sm">
+                                  Loading...
+                                </span>
                               </div>
                             ) : categories.length > 0 ? (
                               <div className="flex flex-col gap-3 max-h-96 overflow-y-auto">
                                 {categories.map((category) => (
                                   <Link
                                     key={category._id}
-                                    href={`/products?category=${encodeURIComponent(category._id)}`}
-                                    onClick={() => setIsProductsDropdownOpen(false)}
+                                    href={`/products?category=${encodeURIComponent(
+                                      category._id
+                                    )}`}
+                                    onClick={() =>
+                                      setIsProductsDropdownOpen(false)
+                                    }
                                     className="flex items-center gap-2 p-3 rounded-lg hover:bg-amber-50 transition-all duration-200 border border-transparent hover:border-amber-200 group"
                                   >
                                     <div className="w-2.5 h-2.5 rounded-full bg-amber-100 flex flex-col items-center justify-center group-hover:bg-amber-200 transition-colors">
@@ -967,7 +1002,9 @@ export default function NavbarClient() {
                         {isSearching ? (
                           <div className="flex items-center justify-center py-8">
                             <Loader2 className="h-6 w-6 animate-spin text-amber-600" />
-                            <span className="ml-2 text-gray-600">Searching...</span>
+                            <span className="ml-2 text-gray-600">
+                              Searching...
+                            </span>
                           </div>
                         ) : searchResults.length > 0 ? (
                           <div className="py-2">
@@ -982,7 +1019,9 @@ export default function NavbarClient() {
                                 className="flex items-center gap-3 px-4 py-3 hover:bg-amber-50 transition-colors"
                               >
                                 <Image
-                                  src={product.images?.[0] || "/placeholder.png"}
+                                  src={
+                                    product.images?.[0] || "/placeholder.png"
+                                  }
                                   alt={product.name}
                                   width={48}
                                   height={48}
@@ -999,7 +1038,9 @@ export default function NavbarClient() {
                               </Link>
                             ))}
                             <Link
-                              href={`/products?search=${encodeURIComponent(searchQuery)}`}
+                              href={`/products?search=${encodeURIComponent(
+                                searchQuery
+                              )}`}
                               onClick={() => {
                                 setIsSearchOpen(false);
                                 setSearchQuery("");
@@ -1019,7 +1060,7 @@ export default function NavbarClient() {
                   </div>
                 )}
               </div>
-              
+
               {/* User Section */}
               {user ? (
                 <>
@@ -1177,7 +1218,11 @@ export default function NavbarClient() {
                 aria-label={isOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isOpen}
               >
-                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {isOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
               </Button>
             </div>
           </div>
