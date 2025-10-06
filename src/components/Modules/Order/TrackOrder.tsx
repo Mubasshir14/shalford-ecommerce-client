@@ -118,10 +118,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
   Package,
-  Truck,
-  CheckCircle,
-  Clock,
-  MapPin,
   AlertCircle,
 } from "lucide-react";
 import OrderDetails from "./OrderDetails";
@@ -171,51 +167,51 @@ const TrackOrder = () => {
     }
   };
 
-  const getDeliveryDate = (updatedAt: string | undefined) => {
-    if (!updatedAt) return "N/A";
-    const date = new Date(updatedAt);
-    date.setDate(date.getDate() + 7);
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  // const getDeliveryDate = (updatedAt: string | undefined) => {
+  //   if (!updatedAt) return "N/A";
+  //   const date = new Date(updatedAt);
+  //   date.setDate(date.getDate() + 7);
+  //   return date.toLocaleDateString("en-US", {
+  //     weekday: "long",
+  //     year: "numeric",
+  //     month: "long",
+  //     day: "numeric",
+  //   });
+  // };
 
-  const getOrderStatus = (status: string) => {
-    const statusMap: any = {
-      pending: {
-        icon: Clock,
-        color: "text-yellow-600",
-        bg: "bg-yellow-50",
-        border: "border-yellow-200",
-        label: "Order Pending",
-      },
-      processing: {
-        icon: Package,
-        color: "text-blue-600",
-        bg: "bg-blue-50",
-        border: "border-blue-200",
-        label: "Processing",
-      },
-      shipped: {
-        icon: Truck,
-        color: "text-purple-600",
-        bg: "bg-purple-50",
-        border: "border-purple-200",
-        label: "Shipped",
-      },
-      delivered: {
-        icon: CheckCircle,
-        color: "text-green-600",
-        bg: "bg-green-50",
-        border: "border-green-200",
-        label: "Delivered",
-      },
-    };
-    return statusMap[status?.toLowerCase()] || statusMap.pending;
-  };
+  // const getOrderStatus = (status: string) => {
+  //   const statusMap: any = {
+  //     pending: {
+  //       icon: Clock,
+  //       color: "text-yellow-600",
+  //       bg: "bg-yellow-50",
+  //       border: "border-yellow-200",
+  //       label: "Order Pending",
+  //     },
+  //     processing: {
+  //       icon: Package,
+  //       color: "text-blue-600",
+  //       bg: "bg-blue-50",
+  //       border: "border-blue-200",
+  //       label: "Processing",
+  //     },
+  //     shipped: {
+  //       icon: Truck,
+  //       color: "text-purple-600",
+  //       bg: "bg-purple-50",
+  //       border: "border-purple-200",
+  //       label: "Shipped",
+  //     },
+  //     delivered: {
+  //       icon: CheckCircle,
+  //       color: "text-green-600",
+  //       bg: "bg-green-50",
+  //       border: "border-green-200",
+  //       label: "Delivered",
+  //     },
+  //   };
+  //   return statusMap[status?.toLowerCase()] || statusMap.pending;
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 py-12 px-4 mt-10 font-sansita">
@@ -348,7 +344,7 @@ const TrackOrder = () => {
               className="mb-8"
             >
               {/* Status Banner */}
-              {order[0].status && (
+              {/* {order[0].status && (
                 <div
                   className={`${getOrderStatus(order[0].status).bg} ${
                     getOrderStatus(order[0].status).border
@@ -387,10 +383,10 @@ const TrackOrder = () => {
                     </div>
                   </div>
                 </div>
-              )}
+              )} */}
 
               {/* Delivery Info */}
-              {order[0].updatedAt && (
+              {/* {order[0].updatedAt && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -412,7 +408,7 @@ const TrackOrder = () => {
                     <MapPin className="w-8 h-8 text-green-500" />
                   </div>
                 </motion.div>
-              )}
+              )} */}
 
               {/* Order Details */}
               <motion.div
