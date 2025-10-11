@@ -13,6 +13,7 @@ import { getAllCategory } from "@/components/Services/Category";
 import { Menu, X } from "lucide-react";
 import ProductSidebar from "./ProductSidebar";
 import { useSearchParams } from "next/navigation";
+import { CircleLoader } from "react-spinners";
 
 const ProductPage = () => {
   const searchParams = useSearchParams();
@@ -349,7 +350,9 @@ const ProductPage = () => {
         {/* Products Grid */}
         <main className="flex-1">
           {loading ? (
-            <div className="text-center text-gray-600">Loading products...</div>
+            <div className="flex items-center justify-center h-20">
+              <CircleLoader color="#d39e17" />
+            </div>
           ) : products.length === 0 ? (
             <div className="text-center text-gray-600">
               No products available.

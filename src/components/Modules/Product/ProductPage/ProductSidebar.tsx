@@ -350,9 +350,9 @@ const ProductSidebar: React.FC<ProductSidebarProps> = ({
 
             {/* Price Display */}
             <div className="flex items-center justify-center gap-3 text-lg font-semibold text-gray-700">
-              <span className="text-amber-600">${localMinPrice}</span>
+              <span className="text-amber-600">৳{localMinPrice}</span>
               <span className="text-gray-400">—</span>
-              <span className="text-amber-600">${localMaxPrice}</span>
+              <span className="text-amber-600">৳{localMaxPrice}</span>
             </div>
 
             {/* Input Fields */}

@@ -290,18 +290,18 @@ export default function FeaturedProductCard({
         <div className="flex  justify-between items-center gap-3 pt-2">
           <div className="flex flex-col">
             <span className="text-lg font-bold text-amber-600">
-              ৳{product.price.toFixed(2)}
+              ৳{product.price}
             </span>
             {product.price !== product.delPrice && (
               <span className="text-xs text-gray-400 line-through">
-                ৳{product.delPrice.toFixed(2)}
+                ৳{product.delPrice}
               </span>
             )}
           </div>
           <div>
             {product.price !== product.delPrice && (
               <span className="text-sm font-semibold text-amber-600 px-2 py-1 rounded-md mb-1">
-                Save ৳{(product.delPrice - product.price).toFixed(2)}
+                Save ৳{(product.delPrice - product.price)}
               </span>
             )}
           </div>

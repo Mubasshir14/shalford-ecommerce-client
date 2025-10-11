@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -623,6 +624,7 @@ import {
   Package,
   Loader2,
   CircleDollarSign,
+  Globe,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -675,6 +677,9 @@ export default function NavbarClient() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const productsDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Language
+  const [currentLang, setCurrentLang] = useState("en");
 
   const navItems: NavItem[] = [
     { name: "Products", path: "/products", icon: Shirt, hasDropdown: true },
@@ -850,6 +855,52 @@ export default function NavbarClient() {
     return pathname === path;
   };
 
+  // Cookie-based Language Switcher (Working Method)
+  const changeLanguage = (lang: string) => {
+    console.log("🔄 Changing language to:", lang);
+    if (lang === "bn") {
+      document.cookie = "googtrans=/en/bn; path=/; max-age=31536000";
+      window.location.hash = "#googtrans(en|bn)";
+      setCurrentLang("bn");
+      localStorage.setItem("selectedLanguage", "bn");
+      console.log("✅ Cookie set, reloading...");
+      window.location.reload();
+    } else {
+      document.cookie = "googtrans=/en/en; path=/; max-age=31536000";
+      document.cookie = "googtrans=; path=/; max-age=0"; 
+      window.location.hash = "";
+
+      setCurrentLang("en");
+      localStorage.setItem("selectedLanguage", "en");
+
+      console.log("✅ Resetting to English, reloading...");
+      window.location.reload();
+    }
+  };
+
+  useEffect(() => {
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(";").shift();
+      return null;
+    };
+
+    const googtrans = getCookie("googtrans");
+    if (googtrans) {
+      if (googtrans.includes("/bn")) {
+        setCurrentLang("bn");
+      } else {
+        setCurrentLang("en");
+      }
+    }
+
+    const savedLang = localStorage.getItem("selectedLanguage");
+    if (savedLang && savedLang !== currentLang) {
+      setCurrentLang(savedLang);
+    }
+  }, []);
+
   return (
     <>
       <nav
@@ -862,14 +913,13 @@ export default function NavbarClient() {
             {/* Logo */}
             <Link href="/" className="">
               <Image
-              width={120}
-              height={80}
+                width={120}
+                height={80}
                 src={Logo}
                 alt="Brand Logo"
                 className=" transition-transform duration-300 group-hover:scale-110"
                 priority
               />
-              
             </Link>
 
             {/* Desktop Menu */}
@@ -1059,6 +1109,35 @@ export default function NavbarClient() {
                     )}
                   </div>
                 )}
+              </div>
+              <div>
+                {/* Language Toggle Switch */}
+                <button
+                  onClick={() =>
+                    changeLanguage(currentLang === "en" ? "bn" : "en")
+                  }
+                  className="relative flex items-center space-x-2 bg-neutral-800/40 backdrop-blur-sm rounded-full px-4 py-2 border border-neutral-700/50 hover:border-amber-600/50 transition-all group"
+                  title={
+                    currentLang === "en"
+                      ? "Switch to Bangla"
+                      : "Switch to English"
+                  }
+                >
+                  <Globe className="w-4 h-4 text-amber-500 group-hover:text-amber-400 transition-colors" />
+
+                  {/* Toggle Indicator */}
+                  <div className="relative w-12 h-6 bg-neutral-700/50 rounded-full transition-all">
+                    <div
+                      className={`absolute top-0.5 left-0.5 w-5 h-5 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full shadow-lg transition-all duration-300 ${
+                        currentLang === "bn" ? "translate-x-6" : "translate-x-0"
+                      }`}
+                    />
+                  </div>
+
+                  <span className="text-xs font-medium text-neutral-300 group-hover:text-amber-500 transition-colors">
+                    Bangla
+                  </span>
+                </button>
               </div>
 
               {/* User Section */}
@@ -1285,6 +1364,36 @@ export default function NavbarClient() {
                 </Link>
               </>
             )}
+                          <div>
+                {/* Language Toggle Switch */}
+                <button
+                  onClick={() =>
+                    changeLanguage(currentLang === "en" ? "bn" : "en")
+                  }
+                  className="relative flex items-center space-x-2 bg-neutral-800/40 backdrop-blur-sm rounded-full px-4 py-2 border border-neutral-700/50 hover:border-amber-600/50 transition-all group"
+                  title={
+                    currentLang === "en"
+                      ? "Switch to Bangla"
+                      : "Switch to English"
+                  }
+                >
+                  <Globe className="w-4 h-4 text-amber-500 group-hover:text-amber-400 transition-colors" />
+
+                  {/* Toggle Indicator */}
+                  <div className="relative w-12 h-6 bg-neutral-700/50 rounded-full transition-all">
+                    <div
+                      className={`absolute top-0.5 left-0.5 w-5 h-5 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full shadow-lg transition-all duration-300 ${
+                        currentLang === "bn" ? "translate-x-6" : "translate-x-0"
+                      }`}
+                    />
+                  </div>
+
+                  
+                  <span className="text-xs font-medium text-neutral-300 group-hover:text-amber-500 transition-colors">
+                    Bangla
+                  </span>
+                </button>
+              </div>
 
             {user && (
               <Link

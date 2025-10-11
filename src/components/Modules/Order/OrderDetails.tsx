@@ -187,11 +187,14 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                 <span>
                   Placed on{" "}
                   {orderData.createdAt
-                    ? new Date(orderData.createdAt).toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                      })
+                    ? new Date(orderData.createdAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        }
+                      )
                     : "N/A"}
                 </span>
               </div>
@@ -260,10 +263,7 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                       const isActive = currentStep === step.step;
 
                       return (
-                        <div
-                          key={index}
-                          className="flex flex-col items-center"
-                        >
+                        <div key={index} className="flex flex-col items-center">
                           <motion.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
@@ -343,7 +343,9 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                         {index < trackingSteps.length - 1 && (
                           <div
                             className={`w-1 flex-1 min-h-[40px] ${
-                              isCompleted ? "bg-gradient-to-b from-amber-500 to-orange-500" : "bg-amber-200"
+                              isCompleted
+                                ? "bg-gradient-to-b from-amber-500 to-orange-500"
+                                : "bg-amber-200"
                             }`}
                           ></div>
                         )}
@@ -371,14 +373,13 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                         {isCompleted && step.step === 0 && (
                           <p className="text-xs text-amber-500 mt-1">
                             {orderData.createdAt
-                              ? new Date(orderData.createdAt).toLocaleDateString(
-                                  "en-US",
-                                  {
-                                    month: "short",
-                                    day: "numeric",
-                                    year: "numeric",
-                                  }
-                                )
+                              ? new Date(
+                                  orderData.createdAt
+                                ).toLocaleDateString("en-US", {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                })
                               : ""}
                           </p>
                         )}
@@ -445,13 +446,17 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                 <div className="p-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-200">
-                  <div className="text-sm text-amber-600 mb-1 font-medium">Total Amount</div>
+                  <div className="text-sm text-amber-600 mb-1 font-medium">
+                    Total Amount
+                  </div>
                   <div className="text-2xl font-bold text-amber-700">
                     ৳{orderData.amount || 0}
                   </div>
                 </div>
                 <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-200">
-                  <div className="text-sm text-blue-600 mb-1 font-medium">Total Items</div>
+                  <div className="text-sm text-blue-600 mb-1 font-medium">
+                    Total Items
+                  </div>
                   <div className="text-2xl font-bold text-blue-700">
                     {totalProducts}
                   </div>
@@ -612,7 +617,9 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                       Phone Number
                     </div>
                     <div className="text-amber-800 font-semibold">
-                      {orderData.order?.contact || orderData.user?.phone || "N/A"}
+                      {orderData.order?.contact ||
+                        orderData.user?.phone ||
+                        "N/A"}
                     </div>
                   </div>
                 </div>
@@ -649,7 +656,9 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                   <div className="mt-4 p-4 bg-amber-50 rounded-2xl border border-amber-200">
                     <div className="flex items-center gap-2 mb-2">
                       <FileText className="w-5 h-5 text-amber-700" />
-                      <span className="font-bold text-amber-800">Order Notes</span>
+                      <span className="font-bold text-amber-800">
+                        Order Notes
+                      </span>
                     </div>
                     <div className="text-sm text-amber-800 whitespace-pre-line">
                       {orderData.order.specification}
@@ -671,7 +680,15 @@ const OrderDetails = ({ order }: { order: OrderData[] }) => {
                 If you have any questions about your order, feel free to contact
                 our support team.
               </p>
-              <button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-2 px-4 rounded-2xl transition-all duration-200 shadow-lg">
+              <button
+                onClick={() =>
+                  window.open(
+                    `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`,
+                    "_blank"
+                  )
+                }
+                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-2 px-4 rounded-2xl transition-all duration-200 shadow-lg"
+              >
                 Contact Support
               </button>
             </motion.div>

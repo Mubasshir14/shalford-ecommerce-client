@@ -290,9 +290,9 @@ export default function AllProductSubCard({ product }: ProductCardProps) {
         {/* Price Section */}
         <div className="flex justify-between items-center pt-2">
           <div className="flex flex-col">
-            <span className="text-sm font-bold text-amber-600">৳{product.price.toFixed(2)}</span>
+            <span className="text-sm font-bold text-amber-600">৳{product.price}</span>
             {product.price !== product.delPrice && (
-              <span className="text-xs text-gray-400 line-through">৳{product.delPrice.toFixed(2)}</span>
+              <span className="text-xs text-gray-400 line-through">৳{product.delPrice}</span>
             )}
           </div>
         </div>
