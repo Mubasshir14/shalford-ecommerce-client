@@ -5,6 +5,7 @@ import { Sansita, Lobster, Arima, Oleo_Script } from "next/font/google";
 import Providers from "@/components/lib/providers/Providers";
 import SupportIcon from "@/components/shared/Support/SupportIcon";
 import GoogleTranslate from "@/components/shared/GoogleTranslate/GoogleTranslate";
+import WebSupport from "@/components/shared/WebSupport/WebSupport";
 
 const sansita = Sansita({
   variable: "--font-sansita",
@@ -91,9 +92,10 @@ export default function RootLayout({
         className={`${sansita.variable} ${arima.variable} ${oleo_script.variable} ${lobster.variable} antialiased bg-gradient-to-br from-amber-50/40 via-orange-50/40 to-yellow-50`}
       >
         <Providers>
-           <GoogleTranslate />
+          <GoogleTranslate />
           <Toaster richColors position="top-center" />
           {children}
+          <WebSupport />
           <SupportIcon />
         </Providers>
       </body>
